@@ -1,0 +1,53 @@
+@page
+@model WebApp.Pages_CheckersOptions.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 align="center">Game Options</h1>
+
+<p align="center">
+    <a asp-page="Create">Create New</a>
+</p>
+
+<table class="table info-table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersOptions[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersOptions[0].Width)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersOptions[0].Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersOptions[0].WhiteStarts)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CheckersOptions) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Width)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Height)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhiteStarts)
+            </td>
+            <td>
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

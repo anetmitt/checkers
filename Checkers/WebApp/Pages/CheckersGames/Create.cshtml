@@ -1,0 +1,56 @@
+@page
+@using Domain
+@model WebApp.Pages_CheckersGames.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create New Game</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4 info-table">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.GameName" class="control-label"></label>
+                <input asp-for="CheckersGame.GameName" class="form-control" />
+                <span asp-validation-for="CheckersGame.GameName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerOneName" class="control-label"></label>
+                <input asp-for="CheckersGame.PlayerOneName" class="form-control" />
+                <span asp-validation-for="CheckersGame.PlayerOneName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerOneType" class="control-label"></label>
+                <select asp-for="CheckersGame.PlayerOneType" asp-items="Html.GetEnumSelectList<EPlayerType>()" class="form-select"></select>
+                <span asp-validation-for="CheckersGame.PlayerOneType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerTwoName" class="control-label"></label>
+                <input asp-for="CheckersGame.PlayerTwoName" class="form-control" />
+                <span asp-validation-for="CheckersGame.PlayerTwoName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerTwoType" class="control-label"></label>
+                <select asp-for="CheckersGame.PlayerTwoType" asp-items="Html.GetEnumSelectList<EPlayerType>()" class="form-select"></select>
+                <span asp-validation-for="CheckersGame.PlayerTwoType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.CheckersOptionsId" class="control-label"></label>
+                <select asp-for="CheckersGame.CheckersOptionsId" class ="form-select" asp-items="Model.OptionsSelectList"></select>
+            </div>
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="button-19" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,85 @@
+@page
+@model WebApp.Pages.CheckersGames.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 align ="center">All Games</h1>
+
+<p align ="center">
+    <a asp-page="Create">Create New game</a>
+</p>
+<div class="scroll">
+<table class="table info-table table-striped scroll">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].GameName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].GameStarted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].GameOver)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].GameWinner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].PlayerOneName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].PlayerOneType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].PlayerTwoName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].PlayerTwoType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckersGame[0].CheckersOptions)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CheckersGame) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameStarted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameOver)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameWinner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerOneName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerOneType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerTwoName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerTwoType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckersOptions!.Name)
+            </td>
+            <td>
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
+                <a asp-page="./Play" asp-route-id="@item.Id">Play</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

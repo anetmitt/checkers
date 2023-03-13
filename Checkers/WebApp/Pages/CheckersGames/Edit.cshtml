@@ -1,0 +1,75 @@
+@page
+@model WebApp.Pages_CheckersGames.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>CheckersGame</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CheckersGame.Id" />
+            <div class="form-group">
+                <label asp-for="CheckersGame.GameName" class="control-label"></label>
+                <input asp-for="CheckersGame.GameName" class="form-control" />
+                <span asp-validation-for="CheckersGame.GameName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.GameStarted" class="control-label"></label>
+                <input asp-for="CheckersGame.GameStarted" class="form-control" />
+                <span asp-validation-for="CheckersGame.GameStarted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.GameOver" class="control-label"></label>
+                <input asp-for="CheckersGame.GameOver" class="form-control" />
+                <span asp-validation-for="CheckersGame.GameOver" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.GameWinner" class="control-label"></label>
+                <input asp-for="CheckersGame.GameWinner" class="form-control" />
+                <span asp-validation-for="CheckersGame.GameWinner" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerOneName" class="control-label"></label>
+                <input asp-for="CheckersGame.PlayerOneName" class="form-control" />
+                <span asp-validation-for="CheckersGame.PlayerOneName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerOneType" class="control-label"></label>
+                <select asp-for="CheckersGame.PlayerOneType" class="form-control"></select>
+                <span asp-validation-for="CheckersGame.PlayerOneType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerTwoName" class="control-label"></label>
+                <input asp-for="CheckersGame.PlayerTwoName" class="form-control" />
+                <span asp-validation-for="CheckersGame.PlayerTwoName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.PlayerTwoType" class="control-label"></label>
+                <select asp-for="CheckersGame.PlayerTwoType" class="form-control"></select>
+                <span asp-validation-for="CheckersGame.PlayerTwoType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckersGame.CheckersOptionsId" class="control-label"></label>
+                <select asp-for="CheckersGame.CheckersOptionsId" class="form-control" asp-items="ViewBag.CheckersOptionsId"></select>
+                <span asp-validation-for="CheckersGame.CheckersOptionsId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,176 @@
+@page
+@using Domain
+@model WebApp.Pages.CheckersGames.Play
+<script>let allCells;let lastCell;let allButtons; let lastButton</script>
+
+@{
+    var boardCopy = Model.GameBoard;
+    var height = boardCopy.Length;
+    var width = boardCopy[0].Length;
+    var buttonCount = (width * height - 2 * width) / 4;
+}
+<div class="info-table">
+@{
+    if (Model.CheckersBrain.GetBlackPoints() == buttonCount || Model.CheckersBrain.GetWhitePoints() == buttonCount)
+    {
+        <div class="modal">
+            <p class="message">Game winner: @(Model.CheckersBrain.GetBlackPoints() > Model.CheckersBrain.GetWhitePoints() ? Model.Game.PlayerTwoName : Model.Game.PlayerOneName)!</p>
+            <div class="options">
+                <button class="btn" onclick="window.location = '../Index'">Back to menu!</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h3>Next move by player: @(Model.NextMoveByBlack ? Model.Game.PlayerTwoName + " (Black)" : Model.Game.PlayerOneName + " (White)")</h3>
+    }
+}
+
+<table class="table-bordered game-table">
+    @for (var x = 0; x < boardCopy.Length; x++)
+    {
+        <tr>
+            @for (var y = 0; y < boardCopy[0].Length; y++)
+            {
+                if (y == 0)
+                {
+                    <td class="coordinates"><h2>@(x + 1)</h2></td> 
+                }
+                
+                if (boardCopy[x][y] != null)
+                {
+                    <td class="game-table-cell @GetCellBgrClass(x, y)" onmouseout="this.style.background=''" onmouseover="this.style.backgroundColor = '#bed2b5'">
+                        <div class="button @GetGameButton(boardCopy[x][y]) @(GetActivePiece(x, y, boardCopy)) @NeedsToMovePiece(x, y)" ></div>
+                    </td>
+                }
+                else
+                {
+                    <td class="no-piece game-table-cell @GetCellBgrClass(x, y) @GetMoveCells(x, y) @CheckIfLandingCellAfterTake(x, y)" onmouseout="this.style.background=''" onmouseover="this.style.backgroundColor = '#bed2b5'">
+                    </td>
+                }
+                
+                <script>
+                    allButtons = document.getElementsByClassName("button"); 
+                    allCells = document.getElementsByClassName("game-table-cell");
+                    lastCell = allCells[allCells.length - 1];
+                    lastCell.setAttribute("x", @(x));
+                    lastCell.setAttribute("y", @(y));
+                </script>
+
+                if (x == 0 && y == boardCopy[0].Length - 1)
+                {
+                    <td class="players"><h2>@Model.Game.PlayerTwoName points: @Model.CheckersBrain.GetBlackPoints() x <img class="points-button" src="/white-piece.png" size="2rem"/></h2></td>
+                }
+                
+                if (x == boardCopy.Length - 1 && y == boardCopy[0].Length - 1)
+                {
+                    <td class="players"><h2>@Model.Game.PlayerOneName points: @Model.CheckersBrain.GetWhitePoints() x <img class="points-button" src="/black-piece.png"/></h2></td>
+                }
+                
+            }
+        </tr>
+
+        if (x == boardCopy.Length - 1)
+        {
+            var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+            
+            <tr>
+                <td class="coordinates"></td>
+                @for (var i = 0; i < boardCopy[0].Length; i++)
+                {
+                    <td class="coordinates"><h2>@(alpha[i])</h2></td>
+                }
+            </tr>
+        }
+    }
+</table>
+</div>
+@section Scripts
+{
+    @if (IsAiMove() && !Model.GameOver)
+    {
+        <script>
+            setTimeout( () => {
+                window.location = '/CheckersGames/Play?id=@Model.Game.Id&ai=true';
+            }, 1000);
+        </script>
+    }
+}
+
+
+@functions
+{
+    bool IsAiMove()
+    {
+        return Model.Game.PlayerOneType == EPlayerType.Ai && !Model.NextMoveByBlack ||
+               Model.Game.PlayerTwoType == EPlayerType.Ai && Model.NextMoveByBlack;
+    }
+    
+    static string GetCellBgrClass(int x, int y)
+    {
+        if (x % 2 == 0)
+        {
+            return (y % 2 != 0) ?
+                "game-table-cell-light" : "game-table-cell-brown";
+        }
+        return (y % 2 == 0) ?
+            "game-table-cell-light" : "game-table-cell-brown";
+    }
+
+    static string GetGameButton(EGamePiece? piece)
+    {
+        return piece switch
+        {
+            EGamePiece.Black => "black-button",
+            EGamePiece.White => "white-button",
+            EGamePiece.BlackKing => "black-king-button black-button",
+            EGamePiece.WhiteKing => "white-king-button white-button",
+            _ => ""
+            };
+    }
+
+    string GetActivePiece(int x, int y, EGamePiece?[][] boardCopy)
+    {
+        if (Model.NextMoveByBlack && (boardCopy[x][y] == EGamePiece.Black || boardCopy[x][y] == EGamePiece.BlackKing))
+        {
+            return "active-button";
+        } else if (!Model.NextMoveByBlack && (boardCopy[x][y] == EGamePiece.White || boardCopy[x][y] == EGamePiece.WhiteKing))
+        {
+            return "active-button";
+        }
+
+        return "";
+    }
+
+    string GetMoveCells(int x, int y)
+    {
+        
+        if (Model.PossibleMoves != null)
+        {
+            return Model.PossibleMoves[x][y] == "move" || Model.PossibleMoves[x][y] == "take" ? Model.PossibleMoves[x][y] + " active-cell" : "";
+        }
+
+        return "";
+    }
+    
+    string CheckIfLandingCellAfterTake(int x, int y)
+    {
+        
+        if (Model.TakePieceIfPossible != null)
+        {
+            return Model.TakePieceIfPossible[x][y] == "take" ? Model.TakePieceIfPossible[x][y] + " active-cell" : "";;
+        }
+
+        return "";
+    }
+
+    string NeedsToMovePiece(int x, int y)
+    {
+        if (Model.TakePieceIfPossible != null)
+        {
+            return Model.TakePieceIfPossible[x][y] == "needsToMove" ? Model.TakePieceIfPossible[x][y] : "";;
+        }
+
+        return "";
+    }
+}
